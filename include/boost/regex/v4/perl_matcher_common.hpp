@@ -185,16 +185,6 @@ inline bool perl_matcher<BidiIterator, Allocator, traits>::protected_call(
 #endif
 
 template <class BidiIterator, class Allocator, class traits>
-inline bool perl_matcher<BidiIterator, Allocator, traits>::match()
-{
-#ifdef BOOST_REGEX_HAS_MS_STACK_GUARD
-   return protected_call(&perl_matcher<BidiIterator, Allocator, traits>::match_imp);
-#else
-   return match_imp();
-#endif
-}
-
-template <class BidiIterator, class Allocator, class traits>
 bool perl_matcher<BidiIterator, Allocator, traits>::match_imp()
 {
    // initialise our stack if we are non-recursive:
@@ -235,12 +225,12 @@ bool perl_matcher<BidiIterator, Allocator, traits>::match_imp()
 }
 
 template <class BidiIterator, class Allocator, class traits>
-inline bool perl_matcher<BidiIterator, Allocator, traits>::find()
+inline bool perl_matcher<BidiIterator, Allocator, traits>::match()
 {
 #ifdef BOOST_REGEX_HAS_MS_STACK_GUARD
-   return protected_call(&perl_matcher<BidiIterator, Allocator, traits>::find_imp);
+   return protected_call(&perl_matcher<BidiIterator, Allocator, traits>::match_imp);
 #else
-   return find_imp();
+   return match_imp();
 #endif
 }
 
@@ -322,6 +312,16 @@ bool perl_matcher<BidiIterator, Allocator, traits>::find_imp()
       while(unwind(true)){}
       throw;
    }
+#endif
+}
+
+template <class BidiIterator, class Allocator, class traits>
+inline bool perl_matcher<BidiIterator, Allocator, traits>::find()
+{
+#ifdef BOOST_REGEX_HAS_MS_STACK_GUARD
+   return protected_call(&perl_matcher<BidiIterator, Allocator, traits>::find_imp);
+#else
+   return find_imp();
 #endif
 }
 
