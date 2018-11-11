@@ -16,6 +16,12 @@ platform:
 
 environment:
   matrix:
+    - ARGS: --toolset=gcc address-model=32 define=_POSIX_C_SOURCE=200112L threadapi=pthread link=static
+      PATH: C:\cygwin\bin;%PATH%
+    - ARGS: --toolset=gcc address-model=64 define=_POSIX_C_SOURCE=200112L define=__USE_ISOC99 threadapi=pthread link=static
+      PATH: C:\cygwin64\bin;%PATH%
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      ARGS: --toolset=msvc-14.1 address-model=64 cxxflags=-std:c++latest cxxflags=-permissive-
     - ARGS: --toolset=msvc-9.0  address-model=32
     - ARGS: --toolset=msvc-10.0 address-model=32
     - ARGS: --toolset=msvc-11.0 address-model=32
@@ -38,7 +44,6 @@ environment:
       PATH: C:\mingw-w64\i686-5.3.0-posix-dwarf-rt_v4-rev0\mingw32\bin;%PATH%
     - ARGS: --toolset=gcc address-model=32 linkflags=-Wl,-allow-multiple-definition
       PATH: C:\MinGW\bin;%PATH%
-
 
 install:
   - cd ..
